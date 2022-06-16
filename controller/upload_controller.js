@@ -3,10 +3,11 @@ const readXlsxFile = require("read-excel-file/node");
 
 exports.excelfileupload = async (req, res) => {
   try {
-        if (req.file == undefined) {
-        return res.status(400).send("Please upload an excel file!");
-        }
-    let path =      __basedir + "/resources/statics/assets/uploads/" + req.file.filename;
+    if (req.file == undefined) {
+      return res.status(400).send("Please upload an excel file!");
+    }
+    let path =
+      __basedir + "/resources/statics/assets/uploads/" + req.file.filename;
     readXlsxFile(path).then((rows) => {
       // skip header
       rows.shift();
@@ -20,10 +21,11 @@ exports.excelfileupload = async (req, res) => {
         };
         tutorials.push(tutorial);
       });
-      console.log('upload excel file' , req.file.originalname)
-      upload.bulkCreate(tutorials)
+      console.log("upload excel file", req.file.originalname);
+      upload
+        .bulkCreate(tutorials)
         .then(() => {
-         return res.status(200).send({
+          return res.status(200).send({
             message: "Upload  file successfully: " + req.file.originalname,
           });
         })
@@ -36,25 +38,21 @@ exports.excelfileupload = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-   return  res.status(500).send({
+    return res.status(500).send({
       message: "Could not upload the file: " + req.file.originalname,
     });
   }
 };
 
-exports.getexcelfile = async (req , res) =>{
-  try{
-    const excelfile = await upload.findAll({})
-     res.status(200).send({message: "Excelfile" ,
-     Excelfile: excelfile ,
+exports.getexcelfile = async (req, res) => {
+  try {
+    const excelfile = await upload.findAll({});
+    res.status(200).send({ message: "Excelfile", Excelfile: excelfile });
+  } catch (error) {
+    console.log("Error ", error);
+    return res.status(402).send({
+      message: "Could not get excel file",
+      Error: error,
     });
-  } catch
-    (error){
-      console.log("Error " , error)
-      return res.status(402).send({
-        message: "Could not get excel file",
-        Error : error
-      })
-    };
-  
+  }
 };
