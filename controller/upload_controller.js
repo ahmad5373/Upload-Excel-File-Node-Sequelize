@@ -21,7 +21,6 @@ exports.excelfileupload = async (req, res) => {
         };
         tutorials.push(tutorial);
       });
-      console.log("upload excel file", req.file.originalname);
       upload.bulkCreate(tutorials)
         .then(() => {
           return res.status(200).send({
